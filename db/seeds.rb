@@ -15,20 +15,25 @@ end
 def create_character_from_hash(character_hash)
   c_new = Character.new
 
-  c_new.name = character["name"]
-  c_new.wand = character["wand"]["core"]
+  c_new.name = character_hash["name"]
+  c_new.wand = character_hash["wand"]["core"]
 
-  c_new.patronus = character["patronus"] if character["patronus"]
+  c_new.patronus = character_hash["patronus"] if character_hash["patronus"]
   # c_new.patronus = Faker::Creature::Animal.name
 
-  c_new.gender = character["gender"]
-  c_new.birth_year = character["dateOfBirth"]
-  c_new.occupation = "student" if character["hogwartsStudent"]
-  c_new.occupation = "Hogwarts Employee" if character["hogwartsStaff"]
+  c_new.gender = character_hash["gender"]
+  c_new.birth_year = character_hash["dateOfBirth"]
+  c_new.occupation = "student" if character_hash["hogwartsStudent"]
+  c_new.occupation = "Hogwarts Employee" if character_hash["hogwartsStaff"]
   c_new.pet = ["cat", "owl", "toad", "rat"].sample
   c_new.hit_points = 1
   c_new.charm_points = 1
   c_new.save
+
+  4.times do
+    spell = Spell.all.sample
+    c_new.spellbooks.create(character_id: c_new.id, spell_id: spell.id)
+  end
 end
 
 def run_seed
@@ -42,7 +47,7 @@ def run_seed
   # get characters hash from API
   characters = api.get_characters
   characters.each do |character|
-    create_character_from_hash(character_hash)
+    create_character_from_hash(character)
   end
 end
 
