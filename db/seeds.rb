@@ -1,5 +1,3 @@
-MY_ANIMAL_FAKER = ["alligator", "crocodile", "alpaca", "ant", "antelope", "ape", "armadillo", "donkey", "baboon", "badger", "bat", "bear", "beaver", "bee", "beetle", "buffalo", "butterfly", "camel", "water buffalo", "caribou", "cat", "cattle", "cheetah", "chimpanzee", "chinchilla", "cicada", "clam", "cockroach", "cod", "coyote", "crab", "cricket", "crow",  "raven", "deer", "dinosaur", "dog", "dolphin", "porpoise", "duck", "eagle", "eel", "elephant", "elk", "ferret", "fish", "fly", "fox", "frog", "toad", "gerbil", "giraffe", "gnat", "gnu ", "wildebeest", "goat", "goldfish", "goose", "gorilla", "grasshopper", "guinea pig", "hamster", "hare", "hedgehog", "herring", "hippopotamus", "hornet", "horse", "hound", "hyena", "impala", "jackal", "jellyfish", "kangaroo ", "wallaby", "koala", "leopard", "lion", "lizard", "llama", "locust", "louse", "macaw", "mallard", "mammoth", "manatee", "marten", "mink", "minnow", "mole", "monkey", "moose", "mosquito", "mouse", "rat", "mule", "muskrat", "otter", "ox", "oyster", "panda", "pig", "platypus", "porcupine", "prairie dog", "pug", "rabbit", "raccoon", "reindeer", "rhinoceros", "salmon", "sardine", "scorpion", "seal ", "sea lion", "serval", "shark", "sheep", "skunk", "snail", "snake", "spider", "squirrel", "swan", "termite", "tiger", "trout", "turtle ", "tortoise", "walrus", "wasp", "weasel", "whale", "wolf", "wombat", "woodchuck", "worm", "yak", "yellowjacket", "zebra"]
-
 def create_spell_from_hash(spell_hash)
   type = spell_hash["type"]
   cp = ["Charm","Enchantment","Spell"].include?(type) ? rand(0..10) : 0
@@ -16,7 +14,7 @@ def create_character_from_hash(character_hash)
   c_new.patronus = !character_hash["patronus"] || character_hash["patronus"] == "" ? MY_ANIMAL_FAKER.sample : character_hash["patronus"]
 
   c_new.gender = character_hash["gender"]
-  c_new.birth_year = character_hash["dateOfBirth"]
+  c_new.birth_year = character_hash["yearOfBirth"]
   c_new.occupation = "student" if character_hash["hogwartsStudent"]
   c_new.occupation = "Hogwarts Employee" if character_hash["hogwartsStaff"]
   c_new.pet = ["cat", "owl", "toad", "rat"].sample
@@ -28,18 +26,32 @@ def create_character_from_hash(character_hash)
     spell = Spell.all.sample
     c_new.spellbooks.create(character_id: c_new.id, spell_id: spell.id)
   end
+
+  house = House.find_by(name: character_hash["house"])
+  if house
+    house.characters << c_new
+  end
 end
 
 def create_quote_from_hash(quote_hash)
   character = Character.find_by(name: quote_hash["character"])
-  binding.pry
   if character
     quote = Quote.new(dialog: quote_hash["quote"], character_id: character.id)
-    character << quote
+    character.quotes << quote
+  end
+end
+
+def seed_houses
+  houses = {'Gryffindor' => 'Scarlet & Gold','Slytherin' => 'Green & Silver', 'Ravenclaw' => 'Blue & Bronze', 'Hufflepuff' => 'Yellow & Black' }
+  houses.each do |name, color|
+    House.create(name: name, color: color)
   end
 end
 
 def run_seed
+  # seed houses manually...
+  seed_houses
+
   api = ApiCommunicator.new
   # get spells hash from API
   spells = api.get_spells

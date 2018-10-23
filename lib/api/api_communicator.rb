@@ -11,9 +11,10 @@ class ApiCommunicator
     response = RestClient.get(url)
     JSON.parse(response)
   end
-end
 
-def get_quotes
-  quotes_string = RestClient.get('https://harrypotter.bloomsbury.com/scripts/quotes/quotes.json')
-  JSON.parse(quotes_string)
+  def get_quotes
+    quotes_string = RestClient.get('https://harrypotter.bloomsbury.com/scripts/quotes/quotes.json')
+    JSON.parse(quotes_string)
+  end
+
 end
