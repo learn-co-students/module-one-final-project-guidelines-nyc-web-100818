@@ -6,4 +6,9 @@ class ApiCommunicator
     JSON.parse(response_string)
   end
 
+  def get_characters
+    url = 'http://hp-api.herokuapp.com/api/characters'
+    response = RestClient.get(url)
+    JSON.parse(response)
+  end
 end

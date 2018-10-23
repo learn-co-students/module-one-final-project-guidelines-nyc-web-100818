@@ -13,7 +13,22 @@ def create_spell_from_hash(spell_hash)
 end
 
 def create_character_from_hash(character_hash)
-  # TO DO
+  c_new = Character.new
+
+  c_new.name = character["name"]
+  c_new.wand = character["wand"]["core"]
+
+  c_new.patronus = character["patronus"] if character["patronus"]
+  # c_new.patronus = Faker::Creature::Animal.name
+
+  c_new.gender = character["gender"]
+  c_new.birth_year = character["dateOfBirth"]
+  c_new.occupation = "student" if character["hogwartsStudent"]
+  c_new.occupation = "Hogwarts Employee" if character["hogwartsStaff"]
+  c_new.pet = ["cat", "owl", "toad", "rat"].sample
+  c_new.hit_points = 1
+  c_new.charm_points = 1
+  c_new.save
 end
 
 def run_seed
