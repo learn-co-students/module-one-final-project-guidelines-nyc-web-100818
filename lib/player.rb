@@ -4,7 +4,7 @@ class Player < Character
     super(name: name)
     self.name = name
     self.house_id = House.all.sample.id
-    # wand, pet, patronus,
+    # wand, pet, patronus
     # spells, charms
   end
 
