@@ -20,11 +20,7 @@ class UI
   end
 
   def display_leaderboard
-    # 5. show leaderboard (# students defeated/# students befriended)
-    puts "The current leaderboard: "
-    # get leaderboard from Game instance
-    puts "You: Students defeated: 0, Students befriended: 0"
-    puts "Ron: Students defeated: 0, Students befriended: 0"
+    puts self.game.lboard.all_scores
   end
 
   def display_classmate_info(classmate)
@@ -94,8 +90,10 @@ class UI
 
     if player_hit_points <= 0
       puts "#{classmate.name} defeated you!"
+      classmate.victories += 1
     else
       puts "You defeated #{classmate.name}!"
+      self.game.player.victories += 1
     end
 
   end
@@ -176,6 +174,8 @@ class UI
 
     player = Player.new(name_input) # create new player instance
     self.game.player = player
+
+    self.game.initialize_leaderboard
 
     display_player_info(self.game.player) # display welcome message with player details
 

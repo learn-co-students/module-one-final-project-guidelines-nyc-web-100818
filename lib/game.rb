@@ -1,6 +1,8 @@
 # main game class
 class Game
 
+  attr_accessor :lboard, :player, :classmates
+
   def initialize
     # create classmates array
     @classmates = []
@@ -27,22 +29,10 @@ class Game
       classmate.charms << Charm.all.sample(4)
       @classmates << classmate
     end
-  end
+  end # get_random_classmates
 
-  def player
-    @player
-  end
-
-  def player=(player)
-    @player = player
-  end
-
-  def classmates
-    @classmates
-  end
-
-  def display_leaderboard(lboard)
-    puts lboard.all_scores
+  def initialize_leaderboard
+    @lboard = Leaderboard.new(self.player, self.classmates)
   end
 
 end

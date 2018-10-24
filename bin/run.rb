@@ -3,8 +3,6 @@ require_relative '../config/environment'
 ui = UI.new
 ui.run
 
-lboard = Leaderboard.new(player, game.classmates)
-
 game.display_leaderboard(lboard)
 
 binding.pry
