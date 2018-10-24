@@ -2,22 +2,17 @@
 class UI
   attr_accessor :game
 
-  def welcome
-    # 1. welcome user
+  def display_welcome
     puts "Welcome to Hogwarts!"
-
-    # 2. explain the game
     puts "This is a game where you befriend or defeat your fellow Hogwarts students."
   end
 
-  def get_player_name
-    # 3. get user name
+  def prompt_for_player_name
     print "Enter your name: "
     gets.chomp
   end
 
-  def welcome_player(player)
-
+  def display_player_info(player)
     puts "#{player.name} is in house #{player.house.name}"
     puts "Your wand: #{player.wand}! Your pet: #{player.pet}! Your patronus: #{player.patronus}!"
   end
@@ -30,6 +25,11 @@ class UI
     puts "Ron: Students defeated: 0, Students befriended: 0"
   end
 
+  def display_classmate_info(classmate)
+    puts "You meet #{classmate.name} in the hallway."
+    puts "#{classmate.name} says hello! Some things you know about #{classmate.name}: Pet: #{classmate.pet}, Patonus: #{classmate.patronus}, House: #{classmate.house.name}"
+  end
+
   # 5a. if win condition is met (user or AI player), go to end screen (10)
   def won?
     # checks player instance and student instances to see if anyone has gotten the points to win
@@ -37,63 +37,65 @@ class UI
   end
 
   def turn
-    display_leaderboard
-    # 6. show next action (random encounter)
-    opponent = self.game.classmates.sample
-    # TODO: keep track of who student has already encountered
-    # pick a random student
-    # 7. show story text and turn options (compliment, taunt)
-    puts "You meet #{opponent.name} in the hallway. "
-    puts "Some info about #{opponent.name}: pet: #{opponent.pet}, patonus: #{opponent.patronus}, house: #{opponent.house}"
+    display_leaderboard # display the leaderboard on each turn
+
+    classmate = self.get_random_classmate # get a random classmate
+    self.game.player.classmates_faced << classmate # keep track of who the student has met
+
+    display_classmate_info(classmate) # show the classmate info
+
     valid_input = false
     until valid_input
-      print "Taunt or compiment? [t/c]"
+      puts "Taunt or compliment? [T]/[C]"
       input = gets.chomp
-      if input == "t"
+      if input.upcase == "T"
         valid_input = true
-        self.spell_combat(opponent)
-      elsif input == "c"
+        spell_combat(classmate)
+      elsif input.upcase == "C"
         valid_input = true
-        self.charm_combat(opponent)
+        charm_combat(classmate)
       else
-        puts "invalid input"
+        puts "Invalid input!"
       end
     end
   end
 
-  # a. if taunt is picked, go to combat screen (8)
-  def spell_combat(opponent)
+  def get_random_classmate
+    available_classmates = self.game.classmates.select{|classmate|
+      self.game.player.classmates_faced.include?(classmate) == false
+    }
+    available_classmates.sample
+  end
+
+  def spell_combat(classmate)
     player_hit_points = self.game.player.hit_points
-    opponent_hit_points = opponent.hit_points
-    whose_turn = ["player","opponent"].sample # random player starts
+    classmate_hit_points = classmate.hit_points
+    whose_turn = ["player","classmate"].sample # random player starts
 
-    until player_hit_points <= 0 || opponent_hit_points <= 0
-
+    until player_hit_points <= 0 || classmate_hit_points <= 0
       puts "Your hit points: #{player_hit_points}"
-      puts "#{opponent.name}'s hit points: #{opponent_hit_points}"
-
+      puts "#{classmate.name}'s hit points: #{classmate_hit_points}"
       if whose_turn == "player"
         player_spell = prompt_player_for_spell
-        binding.pry
-        opponent_hit_points -= player_spell.hit_points
-        puts "You cast #{player_spell.name}! #{opponent.name} takes #{player_spell.hit_points} damage."
-        whose_turn = "opponent"
+        classmate_hit_points -= player_spell.hit_points
+        puts "You cast #{player_spell.name}!"
+        puts "#{classmate.name} takes #{player_spell.hit_points} damage."
+        whose_turn = "classmate"
       else
-        opponent_spell = opponent.spells.sample
-        player_hit_points -= opponent_spell.hit_points
-        puts "#{opponent.name} cast #{opponent_spell.name}!"
+        classmate_spell = classmate.spells.sample
+        player_hit_points -= classmate_spell.hit_points
+        puts "#{classmate.name} cast #{classmate_spell.name}!"
+        puts "You take #{classmate_spell.hit_points} damage."
         whose_turn = "player"
       end
+    end
 
-    end
-    # c. Combat over screen: show combat result (who won, how many power/popularity points they get, how many power/popularity points the opponent gets)
-    if self.game.player.hit_points == 0
-      puts "#{opponent.name} defeated you!"
+    if player_hit_points <= 0
+      puts "#{classmate.name} defeated you!"
     else
-      puts "You defeated #{opponent.name}!"
+      puts "You defeated #{classmate.name}!"
     end
-    # update player stats and opponent stats
-    # self.player.points += 1
+
   end
 
   def prompt_player_for_spell
@@ -107,14 +109,11 @@ class UI
       puts "Pick a spell: "
       puts "#{spell_options.join("\n")}"
       spell_input = gets.chomp
-      if spell_input.to_i.to_s == spell_input # check if number
+
+      if spell_input.to_i.to_s == spell_input && spell_input.to_i.between?(1, self.game.player.spells.length)# check if number
         spell = self.game.player.spells[spell_input.to_i - 1]
-        if spell
-          valid_input = true # exit loop
-          return spell # return spell
-        else
-          puts "Invalid input!"
-        end
+        valid_input = true # exit loop
+        return spell # return spell
       else
         puts "Invalid input!"
       end
@@ -122,7 +121,7 @@ class UI
   end
 
   # a. if taunt is picked, go to combat screen (8)
-  def charm_combat(opponent)
+  def charm_combat(classmate)
     player_charm_counter = 0
     opponent_charm_counter = 0
     until player_charm_counter == player.charm_points || opponent_charm_counter == opponent.charm_points
@@ -162,19 +161,21 @@ class UI
   end
 
   # 10. Game over screen: if win condition is met, show the outcome and some story text
-
+  def display_game_over
+    # todo
+  end
 
   def run
     self.game = Game.new # start a new game
 
-    welcome # call welcome method
+    display_welcome # call welcome method
 
-    name_input = get_player_name # prompt for player to enter name
+    name_input = prompt_for_player_name # prompt for player to enter name
 
     player = Player.new(name_input) # create new player instance
     self.game.player = player
 
-    welcome_player(self.game.player) # display welcome message with player details
+    display_player_info(self.game.player) # display welcome message with player details
 
     until won?
       turn # take a turn

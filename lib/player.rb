@@ -1,7 +1,8 @@
 class Player < Character
 
-  attr_accessor :charms, :spells
+  attr_accessor :charms, :spells, :classmates_faced
 
+  # TODO: update to save character to database... find/create by name
   def initialize(name)
     super(name: name)
     self.hit_points = 10
@@ -13,6 +14,7 @@ class Player < Character
     self.patronus = MY_ANIMAL_FAKER.sample
     @spells = Spell.all.sample(4)
     @charms = Charm.all.sample(4)
+    @classmates_faced = []
   end
 
 end

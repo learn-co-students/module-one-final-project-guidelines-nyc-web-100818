@@ -31,8 +31,8 @@ module ModelMapper
       birth_year: character_hash["yearOfBirth"],
       occupation: occupation,
       pet: pet,
-      hit_points: 1,
-      charm_points: 1
+      hit_points: rand(1..10),
+      charm_points: rand(1..10)
     }
   end
 end

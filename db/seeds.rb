@@ -60,6 +60,7 @@ class SeedRunner
       end
     end
 
+    puts "Seeding complete!"
   end
 
 end
