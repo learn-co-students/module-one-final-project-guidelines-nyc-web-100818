@@ -1,16 +1,7 @@
 require_relative '../config/environment'
 
-game = Game.new
 ui = UI.new
-
-ui.welcome
-
-name_input = ui.get_player_name
-
-player = Player.new(name_input)
-game.player = player
-
-ui.welcome_player(game.player)
+ui.run
 
 binding.pry
 
