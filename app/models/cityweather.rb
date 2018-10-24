@@ -1,4 +1,4 @@
-class Date < ActiveRecord::Base
+class CityWeather < ActiveRecord::Base
   belongs_to :city
   belongs_to :weather
 end

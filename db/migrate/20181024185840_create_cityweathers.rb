@@ -1,6 +1,6 @@
-class CreateDates < ActiveRecord::Migration[5.0]
+class CreateCityweathers < ActiveRecord::Migration[5.0]
   def change
-    create_table :dates do |t|
+    create_table :city_weathers do |t|
       t.string :date #date formats? consolidated_weather => applicable_date
       t.float :daily_high #max_temp
       t.float :daily_low #min_temp
