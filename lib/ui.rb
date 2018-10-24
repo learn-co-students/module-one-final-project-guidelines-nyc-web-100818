@@ -4,7 +4,9 @@ class UI
 
   def display_welcome
     puts "Welcome to Hogwarts!"
-    puts "This is a game where you befriend or defeat your fellow Hogwarts students."
+
+    # 2. explain the game
+    puts "This is a game where you befriend or defeat your fellow Hogwarts classmates."
   end
 
   def prompt_for_player_name

@@ -21,11 +21,14 @@ module ModelMapper
       occupation = "alumni"
     end
 
+    wand = "#{character_hash["wand"]["wood"]} wood, #{character_hash["wand"]["core"]} core, #{character_hash["wand"]["length"]} inches"
+
     pet = ["cat", "owl", "toad", "rat"].sample
 
     {
       name: character_hash["name"],
-      wand: character_hash["wand"]["core"],
+      wand: wand,
+       # character_hash["wand"]["core"],
       patronus: patronus,
       gender: character_hash["gender"],
       birth_year: character_hash["yearOfBirth"],

@@ -13,7 +13,21 @@ class SeedRunner
 
     # TODO: add more nice things
     puts "Seeding charms..."
-    charm_hashes = [{dialog: "Something nice", points: 1}]
+    charm_hashes = [{dialog: "It's very nice to meet you.", points: 1},
+    {dialog: "I solemnly swear I am up to no good.", points: 5},
+    {dialog: "You smell lovely!", points: 2},
+    {dialog: "Would you like to go to the Triwizard Tournament Ball with me?", points: 5},
+    {dialog: "I mean, it's sort of exciting, isn't it, breaking the rules?", points: 3},
+    {dialog: "You want to visit Moaning Myrtle sometime?", points: 1},
+    {dialog: "Riddikulus!", points: 5},
+    {dialog: "You have your mother's eyes.", points: 1},
+    {dialog: "Your patronus is very cool!", points: 2},
+    {dialog: "Do you want to exchange chocolate frog cards?", points: 3},
+    {dialog: "Cheering! [A charm that makes the person happy and giddy]", points: 5},
+    {dialog: "What is your favorite candy from Honeydukes?", points: 3},
+    {dialog: "Let's go play Quidditch together!", points: 4},
+    {dialog: "I like Professor Snape.", points: 3},
+    {dialog: "I love your pet! What is his/her name?", points: 2}]
     charm_hashes.each do |charm_hash|
       Charm.create(charm_hash)
     end
