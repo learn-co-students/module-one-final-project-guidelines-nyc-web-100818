@@ -10,7 +10,9 @@ name_input = ui.get_player_name
 player = Player.new(name_input)
 game.player = player
 
-welcome_player(game.player)
+ui.welcome_player(game.player)
+
+binding.pry
 
 # # 1. welcome user
 # puts "Welcome to Hogwarts!"

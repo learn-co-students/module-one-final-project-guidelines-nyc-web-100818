@@ -1,7 +1,9 @@
 class Classmate < Character
 
-  def initialize
-    super
+  attr_accessor :charms
+
+  def initialize(attributes)
+    super(attributes)
     @charms = []
   end
 

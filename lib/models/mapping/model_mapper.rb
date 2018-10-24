@@ -13,7 +13,14 @@ module ModelMapper
   # returns a new hash from API mapped to arguments for Character.new
   def map_to_character(character_hash)
     patronus = !character_hash["patronus"] || character_hash["patronus"] == "" ? MY_ANIMAL_FAKER.sample : character_hash["patronus"]
-    occupation = character_hash["hogwartsStudent"] ? "student" : "staff"
+    if character_hash["hogwartsStudent"]
+      occupation = "student"
+    elsif character_hash["hogwartsStaff"]
+      occupation = "staff"
+    else
+      occupation = "alumni"
+    end
+
     pet = ["cat", "owl", "toad", "rat"].sample
 
     {
