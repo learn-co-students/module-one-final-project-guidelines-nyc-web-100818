@@ -41,9 +41,8 @@ class Game
     @classmates
   end
 
-  def leaderboard
-    # look at stats for player and students
-    # return them to display
+  def display_leaderboard(lboard)
+    puts lboard.all_scores
   end
 
 end

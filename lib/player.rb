@@ -1,6 +1,6 @@
 class Player < Character
 
-  attr_accessor :charms, :spells, :classmates_faced
+  attr_accessor :charms, :spells, :friends, :victories, :classmates_faced
 
   # TODO: update to save character to database... find/create by name
   def initialize(name)
@@ -15,6 +15,8 @@ class Player < Character
     @spells = Spell.all.sample(4)
     @charms = Charm.all.sample(4)
     @classmates_faced = []
+    self.friends = 0
+    self.victories = 0
   end
 
 end
