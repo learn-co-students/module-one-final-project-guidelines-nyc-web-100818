@@ -3,7 +3,11 @@ class Leaderboard
   attr_reader :contenders
 
   def initialize(player, classmates)
-    @contenders = (classmates.unshift(player))
+    @contenders = []
+    @contenders << player
+    classmates.each{|classmate|
+      @contenders << classmate
+    }
   end
 
   # gets the victories and friends of a character
@@ -11,10 +15,10 @@ class Leaderboard
     self.contenders.include?(contender) ? "#{contender.name} |\n #{contender.friends} friends on WitchBook | #{contender.victories} notches on their wand" : "This contender doesn't seem to exist"
   end
 
-  def all_scores
+  def display_all
     scores = "|||Leaderboard|||\n"
     self.contenders.each { |contender| scores = scores + "#{score(contender)}" + "\n" }
-    scores
+    puts scores
   end
 
 end
