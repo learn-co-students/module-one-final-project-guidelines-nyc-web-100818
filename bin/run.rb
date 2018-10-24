@@ -1,5 +1,7 @@
 require_relative '../config/environment'
+puts "run begins here"
 
+greet_user
 
-
-puts "HELLO WORLD"
+binding.pry
+puts "run ends here"
