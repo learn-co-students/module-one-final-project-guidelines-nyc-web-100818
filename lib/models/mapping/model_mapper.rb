@@ -2,15 +2,11 @@ module ModelMapper
 
   # returns a new hash from API mapped to arguments for Spell.new
   def map_to_spell(spell_hash)
-    charm_points = ["Charm","Enchantment","Spell"].include?(spell_hash["type"]) ? rand(0..10) : 0
-    hit_points = ["Hex","Curse","Jinx"].include?(spell_hash["type"]) ? rand(0..10) : 0
-
     {
       name: spell_hash["spell"],
       description: spell_hash["effect"],
       spell_type: spell_hash["type"],
-      charm_points: charm_points,
-      hit_points: hit_points
+      hit_points: rand(1..10)
     }
   end
 

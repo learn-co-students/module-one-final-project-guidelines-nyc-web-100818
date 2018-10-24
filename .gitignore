@@ -1,5 +1,6 @@
 .DS_Store
 .idea
+.notes
 
 log
 node_modules
