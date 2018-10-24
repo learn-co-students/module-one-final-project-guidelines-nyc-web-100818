@@ -32,19 +32,25 @@ class API
   end
 
   def populate_db(response_hash)
-    City.find_or_create_by(name: response_hash["title"])
+    city = City.find_or_create_by(name: response_hash["title"])
 
     response_hash["consolidated_weather"].each do |day|
-      Weather.find_or_create_by(weather_type: day["weather_state_name"])
-    end
-
-    response_hash["consolidated_weather"].each do |day|
-      cw = CityWeather.find_or_create_by(date: day["applicable_date"], daily_high: day["max_temp"] )
+      weather = Weather.find_or_create_by(weather_type: day["weather_state_name"])
+      cw = CityWeather.find_or_create_by(date: day["applicable_date"], daily_high: day["max_temp"])
       cw.city_id = city.id
       cw.weather_id = weather.id
-      # cw.daily_high = response_hash["consolidated_weather"][0]["max_temp"]
-      # pulled from iterator# city_id: city.id, weather_id: weather.id
+      # cw.sun_rise = response_hash["sun_rise"]
+      # cw.daily_low = day["daily_low"]
+      cw.save
     end
+
+    # response_hash["consolidated_weather"].each do |day|
+    #   cw = CityWeather.find_or_create_by(date: day["applicable_date"], daily_high: day["max_temp"] )
+    #   cw.city_id = city.id
+    #   cw.weather_id = weather.id
+    #   # cw.daily_high = response_hash["consolidated_weather"][0]["max_temp"]
+    #   # pulled from iterator# city_id: city.id, weather_id: weather.id
+    # end
 
   end
 
