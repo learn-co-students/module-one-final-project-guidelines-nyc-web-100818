@@ -1,6 +1,6 @@
 class Player < Character
 
-  attr_accessor :charms
+  attr_accessor :charms, :friends, :victories
 
   def initialize(name)
     super(name: name)
@@ -16,6 +16,8 @@ class Player < Character
       self.spellbooks << spellbook
     end
     self.charms << Charm.all.sample(4)
+    self.friends = 0
+    self.victories = 0
   end
 
 end
