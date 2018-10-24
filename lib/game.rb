@@ -8,7 +8,7 @@ class Game
   end
 
   def get_random_classmates
-    characters = Character.all.sample(9)
+    characters = Character.all.select {|character| character.occupation == "student" || character.occupation == "staff" }.sample(9)
     characters.each do |character|
       classmate_hash = {
         name: character.name,
@@ -17,8 +17,10 @@ class Game
         wand: character.wand,
         patronus: character.patronus,
         pet: character.pet,
+        birth_year: character.birth_year,
         charm_points: character.charm_points,
-        hit_points: character.hit_points
+        hit_points: character.hit_points,
+        occupation: character.occupation
       }
       classmate = Classmate.new(classmate_hash)
       classmate.spells = character.spells

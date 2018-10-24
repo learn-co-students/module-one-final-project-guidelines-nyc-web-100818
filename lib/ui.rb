@@ -18,7 +18,7 @@ class UI
   def welcome_player(player)
 
     puts "#{player.name} is in house #{player.house.name}"
-    puts "Your wand: wandy! Your patronus: cat! Your pet: snake!"
+    puts "Your wand: #{player.wand}! Your pet: #{player.pet}! Your patronus: #{player.patronus}!"
   end
 
   def display_leaderboard
