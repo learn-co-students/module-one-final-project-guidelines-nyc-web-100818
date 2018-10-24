@@ -14,6 +14,8 @@ ui.welcome_player(game.player)
 
 lboard = Leaderboard.new(player, game.classmates)
 
+game.display_leaderboard(lboard)
+
 binding.pry
 
 # # 1. welcome user
