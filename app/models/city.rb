@@ -42,8 +42,10 @@ class City < ActiveRecord::Base
     hi_temp = max["daily_high"].to_i
     low_temp = min["daily_low"].to_i
     range = hi_temp - low_temp
-    binding.pry
-    puts "Weekly high __ Weekly low ____ Range ____"
+    puts "
+    Weekly high is #{hi_temp}
+    Weekly low is #{low_temp}
+    Weekly range is #{range}"
   end
 
 
