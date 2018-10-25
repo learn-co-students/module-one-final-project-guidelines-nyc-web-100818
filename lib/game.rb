@@ -1,7 +1,5 @@
 # main game class
 class Game
-  include SpellCombat
-
   attr_accessor :lboard, :player, :classmates
 
   def initialize
@@ -27,7 +25,7 @@ class Game
       }
       classmate = Classmate.new(classmate_hash)
       classmate.spells = character.spells
-      classmate.charms << Charm.all.sample(4)
+      classmate.charms = Charm.all.sample(4)
       @classmates << classmate
     end
   end # get_random_classmates
@@ -59,10 +57,12 @@ class Game
       input = gets.chomp
       if input.upcase == "T"
         valid_input = true
-        spell_combat(self.player, classmate)
+        combat_round = SpellCombat.new(self.player, classmate)
+        combat_round.start
       elsif input.upcase == "C"
         valid_input = true
-        charm_combat(classmate)
+        combat_round = CharmCombat.new(self.player, classmate)
+        combat_round.start
       else
         puts "Invalid input!"
       end
