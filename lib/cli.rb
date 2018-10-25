@@ -1,7 +1,9 @@
+require 'pry'
+
 def greet_user
-  puts "==================="
-  puts "Hello! Welcome to the Weather Destination App."
-  puts "===================\n\n"
+  puts '============================================='
+  puts 'Hello! Welcome to the Weather Destination App'.colorize(color: :blue, background: :red)
+  puts "=============================================\n\n"
 end
 
 def menu
@@ -15,6 +17,18 @@ def menu
   "
 end
 
-def menu2
-  puts "MENU2"
+# user picks a city
+
+# display city weather for THAT DAY and the WEEK FORECAST
+
+def menu2 # This will come after we display city specific data
+  puts "Please select from one of the following options:\n
+  1. Return to main menu to select another city.
+  2. Look at the forecasts across each city.
+  3. Exit.
+  "
 end
+
+
+
+# binding.pry
