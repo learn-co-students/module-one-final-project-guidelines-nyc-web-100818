@@ -33,12 +33,13 @@ class CharmCombat
         puts "#{self.classmate.name} blushes. #{player_charm.points} charm points added!"
         whose_turn = "classmate"
       else
+        puts "It's #{self.classmate.name}'s turn...'"
+        sleep(1)
         classmate_charm = self.classmate.charms.sample
         @player_cp += classmate_charm.points
         puts "#{self.classmate.name} said: #{classmate_charm.dialog}"
         puts "#{classmate_charm.points} added!"
         whose_turn = "player"
-        sleep(3)
       end
     end
 
@@ -84,4 +85,5 @@ class CharmCombat
     charm_number = input_string.to_i
     charm_number.to_s == input_string && charm_number.between?(1, self.player.charms.length) # check valid number
   end
+
 end

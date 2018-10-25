@@ -35,11 +35,15 @@ class Game
   end
 
   def lost?
-    self.classmates.any?{|classmate| classmate.victories == 10 || classmate.friends == 10}
+    self.classmates.any?{|classmate| classmate.victories == 5 || classmate.friends == 5}
   end
 
   def won?
-    self.player.victories == 10 || self.player.friends == 10
+    self.player.victories == 5 || self.player.friends == 5
+  end
+
+  def over?
+    self.lost? || self.won?
   end
 
   def turn

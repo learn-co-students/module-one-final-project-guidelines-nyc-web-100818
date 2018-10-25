@@ -35,8 +35,8 @@ class SpellCombat
         puts "#{self.classmate.name} takes #{player_spell.hit_points} damage."
         whose_turn = "classmate"
       else
-        puts "It's #{self.classmate.name}'s turn.'"
-        sleep(3) # AI thinking...
+        puts "It's #{self.classmate.name}'s turn..."
+        sleep(1) # AI thinking...
         classmate_spell = self.classmate.spells.sample
         self.player_hp -= classmate_spell.hit_points
         puts "#{self.classmate.name} cast #{classmate_spell.name}!"

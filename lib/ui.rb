@@ -17,30 +17,33 @@ class UI
     puts "Your wand: #{player.wand}! Your pet: #{player.pet}! Your patronus: #{player.patronus}!"
   end
 
-  # 10. Game over screen: if win condition is met, show the outcome and some story text
   def display_game_over
-    # todo
+    if self.game.won?
+      puts "You won!"
+    else
+      puts "You lost :("
+    end
   end
 
   def run
     self.game = Game.new # start a new game
 
-    display_welcome # call welcome method
+    display_welcome # display welcome message
 
     name_input = prompt_for_player_name # prompt for player to enter name
 
     player = Player.new(name_input) # create new player instance
     self.game.player = player
 
-    self.game.initialize_leaderboard
+    self.game.initialize_leaderboard # player must be initialized before leaderboard can be initialized
 
     display_player_info(self.game.player) # display welcome message with player details
 
-    until self.game.won? || self.game.lost?
+    until self.game.over?
       self.game.turn # take a turn
     end
 
-    puts "You won! You're the most popular kid in school."
+    display_game_over
 
   end
 
