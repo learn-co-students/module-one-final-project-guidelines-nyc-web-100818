@@ -44,11 +44,12 @@ class API
 
     response_hash["consolidated_weather"].each do |day|
       weather = Weather.find_or_create_by(weather_type: day["weather_state_name"])
-      cw = CityWeather.find_or_create_by(date: day["applicable_date"], daily_high: day["max_temp"], daily_low: day["min_temp"])
-      cw.city_id = city.id
-      cw.weather_id = weather.id
+      cw = CityWeather.find_or_create_by(date: day["applicable_date"], city_id: city.id)
+      cw.daily_high = day["max_temp"]
+      cw.daily_low = day["min_temp"]
       cw.sun_rise = response_hash["sun_rise"]
       cw.sun_set = response_hash["sun_set"]
+      cw.weather_id = weather.id
       cw.save
     end
   end
@@ -58,14 +59,17 @@ class API
     City.find_by(name: city)
   end
 
-  def city_today_info(current_city, hash)
+  def city_today_info(current_city, today)
     puts "Today's Forecast for #{current_city.name}:\n\n"
-    puts "High - #{celsius_fahrenheit(hash["consolidated_weather"][0]["max_temp"])} ºF"
-    puts "Low - #{celsius_fahrenheit(hash["consolidated_weather"][0]["min_temp"])} ºF"
-    sr1 = hash["sun_rise"].split(/[T.]/)[1]
+
+    puts "#{today.weather["weather_type"]}"
+    # binding.pry
+    puts "High - #{celsius_fahrenheit(today["daily_high"])} ºF"
+    puts "Low - #{celsius_fahrenheit(today["daily_low"])} ºF"
+    sr1 = today["sun_rise"].split(/[T.]/)[1]
     sr2 = sr1.split(":")
     sr3 = "#{sr2[0]}:#{sr2[1]}"
-    ss1 = hash["sun_set"].split(/[T.]/)[1]
+    ss1 = today["sun_set"].split(/[T.]/)[1]
     ss2 = ss1.split(":", -1)
     ss3 = "#{ss2[0].to_i - 12}:#{ss2[1]}" #fix leading zero missing
     puts "Sunrise - #{sr3} AM"
@@ -77,7 +81,7 @@ class API
     puts "#{current_city.name} weekly forecast:\n\n"
     puts "Weekly average high is #{celsius_fahrenheit(current_city.average_high)} ºF\n"
     puts "Weekly average low is #{celsius_fahrenheit(current_city.average_low)} ºF\n"
-    #temp range
+    current_city.temp_range
 
     #put weather state icon for each day
   end
