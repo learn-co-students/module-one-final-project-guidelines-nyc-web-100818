@@ -14,13 +14,12 @@ class SpellCombat
   end
 
   def display_results
-    if @player_hp <= 0
-      puts "#{self.classmate.name} defeated you!"
-      self.classmate.victories += 1
-    else
-      puts "You defeated #{self.classmate.name}!"
-      self.player.victories += 1
-    end
+    result = @player_hp <= 0 ? "#{self.classmate.name} defeated you!" : "You defeated #{self.classmate.name}!"
+    puts result
+  end
+
+  def calculate_results
+    @player_hp <= 0 ? self.classmate.victories += 1 : self.player.victories += 1
   end
 
   def start
@@ -39,15 +38,32 @@ class SpellCombat
         puts "It's #{self.classmate.name}'s turn.'"
         sleep(3) # AI thinking...
         classmate_spell = self.classmate.spells.sample
-        @player_hp -= classmate_spell.hit_points
+        self.player_hp -= classmate_spell.hit_points
         puts "#{self.classmate.name} cast #{classmate_spell.name}!"
-        puts "#{classmate_spell.name} #{classmate_spell.description}."
+        puts "#{classmate_spell.name}: #{classmate_spell.description}."
         puts "You take #{classmate_spell.hit_points} damage."
         whose_turn = "player"
       end
     end
 
+    calculate_results
     display_results
+  end
+
+  def start_ai_round
+    whose_turn = ["player","classmate"].sample # random player starts
+    until over?
+      if whose_turn == "player"
+        player_spell = self.player.spells.sample
+        self.classmate_hp -= player_spell.hit_points
+        whose_turn = "classmate"
+      else
+        classmate_spell = self.classmate.spells.sample
+        self.player_hp -= classmate_spell.hit_points
+        whose_turn = "player"
+      end
+    end
+    calculate_results
   end
 
   def over?

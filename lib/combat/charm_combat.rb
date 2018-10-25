@@ -14,13 +14,12 @@ class CharmCombat
   end
 
   def display_results
-    if @player_cp >= self.player.charm_points
-      puts "#{self.classmate.name} smittened you!"
-      self.classmate.friends += 1
-    else
-      puts "You smittened #{self.classmate.name}!"
-      self.player.friends += 1
-    end
+    result = @player_cp >= self.player.charm_points ? "#{self.classmate.name} smittened you!" : "You smittened #{self.classmate.name}!"
+    puts result
+  end
+
+  def calculate_results
+    @player_cp >= self.player.charm_points ? self.classmate.friends += 1 : self.player.friends += 1
   end
 
   def start
@@ -43,7 +42,24 @@ class CharmCombat
       end
     end
 
+    calculate_results
     display_results
+  end
+
+  def start_ai_round
+    whose_turn = ["player","classmate"].sample # random player starts
+    until over?
+      if whose_turn == "player"
+        player_charm = self.player.charms.sample
+        self.classmate_cp += player_charm.points
+        whose_turn = "classmate"
+      else
+        classmate_charm = self.classmate.charms.sample
+        @player_cp += classmate_charm.points
+        whose_turn = "player"
+      end
+    end
+    calculate_results
   end
 
   def over?

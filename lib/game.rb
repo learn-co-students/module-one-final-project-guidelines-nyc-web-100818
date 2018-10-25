@@ -43,13 +43,14 @@ class Game
   end
 
   def turn
+
     self.lboard.display_all # display the leaderboard on each turn
 
     classmate = self.get_random_classmate # get a random classmate
+    self.player.classmates_faced << classmate # keep track of who the student has met
+    already_played = [player, classmate] # keeps track of who has faced each other this turn
 
     classmate.display_intro # show the classmate info
-
-    self.player.classmates_faced << classmate # keep track of who the student has met
 
     valid_input = false
     until valid_input
@@ -67,6 +68,30 @@ class Game
         puts "Invalid input!"
       end
     end
+
+    simulate_ai_combat(already_played)
+
+  end
+
+  def simulate_ai_combat(already_played)
+    4.times do
+      classmate_1 = get_available_classmate_for_round(already_played)
+      already_played += [classmate_1]
+      classmate_2 = get_available_classmate_for_round(already_played)
+      already_played += [classmate_2]
+      round = ["T","C"].sample
+      if round == "T"
+        combat_round = SpellCombat.new(classmate_1, classmate_2)
+        combat_round.start_ai_round
+      else
+        combat_round = CharmCombat.new(classmate_1, classmate_2)
+        combat_round.start_ai_round
+      end
+    end
+  end
+
+  def get_available_classmate_for_round(already_played)
+    self.classmates.select{|classmate| !already_played.include?(classmate) }.sample
   end
 
   def get_random_classmate
