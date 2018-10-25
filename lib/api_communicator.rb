@@ -24,13 +24,17 @@ class API
   end
 
   def city_selection
-    puts "Please enter a value from 1 - 6:"
-    user_input = gets.chomp.to_i
+    # puts "Please enter a value from 1 - 6:"
+    while true
+      user_input = gets.chomp.to_i
       if user_input > 6 || user_input < 1
-        puts "Please select a number from 1 to 6."
-      else
-        user_input.to_s
+        puts "Please select a number from 1 to 6.\n"
+        next
+      elsif user_input <= 6 || user_input >= 1
+        break
       end
+    end
+    user_input.to_s
   end
 
   #gets.chomp will only accept 1-6
@@ -40,6 +44,8 @@ class API
   end
 
   def populate_db(response_hash)
+    # binding.pry
+
     city = City.find_or_create_by(name: response_hash["title"])
 
     response_hash["consolidated_weather"].each do |day|
@@ -75,10 +81,11 @@ class API
     puts "Sunrise - #{sr3} AM"
     puts "Sunset - #{ss3} PM"
     #put weather state here somehwere
+    # binding.pry
   end
 
   def week_forecast(current_city)
-    puts "#{current_city.name} weekly forecast:\n\n"
+    puts "\n\n#{current_city.name} weekly forecast:\n\n"
     puts "Weekly average high is #{celsius_fahrenheit(current_city.average_high)} ºF\n"
     puts "Weekly average low is #{celsius_fahrenheit(current_city.average_low)} ºF\n"
     current_city.temp_range
